@@ -1,0 +1,4 @@
+.env
+raw_data.json
+__pycache__/
+.DS_Store
