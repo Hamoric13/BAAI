@@ -354,6 +354,8 @@ def affordability_score(county_name, annual_income, filing_status, household_siz
     utility_cost = ( ( electricty_price / 100 ) * utility_baseline_2024["electricity"] ) + ( ( natural_gas_price / 10 ) * utility_baseline_2024["natural_gas"] )
     total_combined_cost += utility_cost
     
+
+    #affordability score calculator
     affordability_score_ratio = total_combined_cost / (annual_income / 12)
     return affordability_score_ratio
     
@@ -371,7 +373,7 @@ def bay_counties_comparision(annual_income, filing_status, household_size, bedro
     min_ratio = min(all_county_affordability_data, key = lambda x: x["ratio"])["ratio"]
     max_ratio = max(all_county_affordability_data, key = lambda x: x["ratio"])["ratio"]
 
-    normalized_score = []
+    
     for x in all_county_affordability_data :
         x["normalized_score"] = round(( x["ratio"] - min_ratio ) / ( max_ratio - min_ratio ), 3)
     
