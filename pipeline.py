@@ -217,7 +217,7 @@ tax_rates = {
         {"max_income": 100000, "effective_rate": 0.22},
         {"max_income": 150000, "effective_rate": 0.27},
         {"max_income": 200000, "effective_rate": 0.31},
-        {"max_income": float("inf"), "effective_rate": 0.36}
+        {"max_income": 999999999, "effective_rate": 0.36}
     ],
     "head_of_household": [
         {"max_income": 40000, "effective_rate": 0.07},
@@ -226,7 +226,7 @@ tax_rates = {
         {"max_income": 150000, "effective_rate": 0.22},
         {"max_income": 200000, "effective_rate": 0.27},
         {"max_income": 300000, "effective_rate": 0.31},
-        {"max_income": float("inf"), "effective_rate": 0.35}
+        {"max_income": 999999999, "effective_rate": 0.35}
     ],
     "married": [
         {"max_income": 60000, "effective_rate": 0.07},
@@ -235,7 +235,7 @@ tax_rates = {
         {"max_income": 200000, "effective_rate": 0.22},
         {"max_income": 300000, "effective_rate": 0.27},
         {"max_income": 400000, "effective_rate": 0.31},
-        {"max_income": float("inf"), "effective_rate": 0.34},
+        {"max_income": 999999999, "effective_rate": 0.34},
     ]
 }
 

@@ -1,10 +1,3 @@
-export async function loadData() {
-    const response = await fetch('raw_data.json');
-    const data = await response.json();
-    return data
-}
-
-
 
 const bedroomGuide = {
     0: "efficiency",
@@ -23,11 +16,16 @@ const groceryBaseline2024 = {
     6: 920
 };
 
-utilityBaseline2024 = {
+const utilityBaseline2024 = {
     "electricity": 503,
     "natural_gas": 24
 };
 
+export async function loadData() {
+    const response = await fetch('raw_data.json');
+    const data = await response.json();
+    return data
+}
 
 export function affordabilityScore(data, countyName, annualIncome, filingStatus, householdSize, bedrooms, monthlyMiles = 1250, mpg = 28) {
 
