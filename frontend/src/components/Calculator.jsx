@@ -11,7 +11,6 @@ function Calculator({ data, onSubmit}) {
     const [mpg, setMpg] = useState(28);
 
     function handleSubmit(){
-        console.log(bedrooms, householdSize, filingStatus, income);
         const results = bayAreaCountiesComparision(data, +income, filingStatus, householdSize, bedrooms, monthlyMiles, mpg);
         onSubmit(results);
     }

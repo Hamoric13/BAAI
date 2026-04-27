@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import Calculator from './components/Calculator'
 import Results from './components/Results'
 import './App.css'
+import CountyMap from './components/Map'
+
+
 
 function App() {
   const [data, setData] = useState(null);
@@ -17,7 +20,10 @@ function App() {
     <div className="app">
       <h1>Bay Area Affordability Index</h1>
       {data && <Calculator data={data} onSubmit={setResults} />}
-      {results && <Results results={results} />}    </div>
+      {results && <Results results={results} />}
+      {results && <Results results={results} />}
+      {results && <CountyMap results={results} />}
+      </div>
   )
 }
 
