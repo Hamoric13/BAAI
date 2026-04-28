@@ -37,21 +37,17 @@ function CountyMap({ results }) {
       }, []);
   
       const coloredGeojson = geojson ? {
-          ...geojson,
-          features: geojson.features.map(f => {
-              const countyName = COUNTY_FIPS_MAP[f.id];
-              const county = results ? results.find(r => r.county_name === countyName) : null;
-              const score = county ? +county.normalized_score : 0.5;
-              let color = '#088';
-              if (score <= 0.33) color = '#2ecc71';
-              else if (score <= 0.66) color = '#f39c12';
-              else color = '#e74c3c';
-              return {
-                  ...f,
-                  properties: { ...f.properties, color }
-              };
-          })
-      } : null;
+        ...geojson,
+        features: geojson.features.map(f => {
+            const countyName = COUNTY_FIPS_MAP[f.id];
+            const county = results ? results.find(r => r.county_name === countyName) : null;
+            const color = county ? county.color : '#ccc';
+            return {
+                ...f,
+                properties: { ...f.properties, color }
+            };
+        })
+    } : null;
 
     return (
       <div className="map-container" style={{ height: '500px' }}>
@@ -59,6 +55,8 @@ function CountyMap({ results }) {
           initialViewState={viewport}
           mapStyle="mapbox://styles/mapbox/light-v11"
           mapboxAccessToken={MAPBOX_TOKEN}
+          minZoom={6}
+          maxZoom={12}
         >
           {geojson && (
             <Source type="geojson" data={coloredGeojson}>

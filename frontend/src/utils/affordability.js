@@ -135,19 +135,45 @@ export function affordabilityScore(data, countyName, annualIncome, filingStatus,
    totalCombinedMonthlyCost += utilityCost;
 
    const affordabilityScoreRatio = totalCombinedMonthlyCost / (annualIncome/12);
-   return affordabilityScoreRatio;
+   return {
+        ratio: affordabilityScoreRatio,
+        breakdown: {
+            tax: Math.round(monthlyTax),
+            rent: Math.round(monthlyRent),
+            gas: Math.round(monthlyGasCost),
+            groceries: Math.round(monthlyGroceryCost),
+            utilities: Math.round(utilityCost),
+            total: Math.round(totalCombinedMonthlyCost)
+        }
+
+   };
 
 }
 
 export function bayAreaCountiesComparision(data, annualIncome, filingStatus, householdSize, bedrooms, monthlyMiles=1250, mpg=28){
 
     let allCountyAffordabilityData = [];
+    const countyColorMap = {
+        'Alameda County, CA': '#e63946',
+        'Contra Costa County, CA': '#2a9d8f',
+        'Marin County, CA': '#e9c46a',
+        'Napa County, CA': '#f4a261',
+        'San Francisco County, CA': '#264653',
+        'San Mateo County, CA': '#6a4c93',
+        'Santa Clara County, CA': '#1982c4',
+        'Solano County, CA': '#8ac926',
+        'Sonoma County, CA': '#fb5607'
+    };
+
     for (const x of data.county_rent){
-        const ratio = {
+        const result = affordabilityScore(data, x["county_name"], annualIncome, filingStatus, householdSize, bedrooms, monthlyMiles, mpg);
+        const county = {
             "county_name": x["county_name"],
-            "ratio": affordabilityScore(data, x["county_name"], annualIncome, filingStatus, householdSize, bedrooms, monthlyMiles, mpg)
+            "ratio": result.ratio,
+            "breakdown": result.breakdown,
+            "color": countyColorMap[x["county_name"]]
         };
-        allCountyAffordabilityData.push(ratio);
+        allCountyAffordabilityData.push(county);
     }
     const ratios = allCountyAffordabilityData.map(x => x["ratio"]);
     const minRatio = Math.min(...ratios);
@@ -156,7 +182,7 @@ export function bayAreaCountiesComparision(data, annualIncome, filingStatus, hou
     for (const x of allCountyAffordabilityData){
         x["normalized_score"] = ( (x["ratio"] - minRatio) / (maxRatio - minRatio)).toFixed(3);
     }
-
+    allCountyAffordabilityData.sort((a, b) => a.ratio - b.ratio);
     return allCountyAffordabilityData;
 
 }

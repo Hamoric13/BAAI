@@ -15,3 +15,72 @@ body {
   margin: 0 auto;
   padding: 24px;
 }
+
+
+.calculator {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
+.calculator label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.calculator input, .calculator select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.calculator button {
+  padding: 10px 24px;
+  background: #264653;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.results {
+  margin-bottom: 40px;
+}
+
+.map-container {
+  margin-bottom: 40px;
+}
+
+.charts {
+  margin-bottom: 40px;
+}
+
+.charts svg {
+  display: block;
+  margin-bottom: 32px;
+}
+
+.calculator .radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calculator .radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: normal;
+  width: auto;
+}
+
+.calculator .radio-group input {
+  width: auto;
+}
