@@ -6,50 +6,149 @@ function Charts({ data }) {
   const groceryRef = useRef(null);
   const utilityRef = useRef(null);
 
-    useEffect(() => {
+  useEffect(() => {
     if (!data || !gasRef.current) return;
 
-    const gasData = data.gas_prices
+    const caData = data.gas_prices
         .filter(d => d.area_name === 'CALIFORNIA')
         .map(d => ({ date: new Date(d.period), value: +d.value }))
         .sort((a, b) => a.date - b.date);
 
+    const natData = data.gas_prices
+        .filter(d => d.area_name === 'U.S.')
+        .map(d => ({ date: new Date(d.period), value: +d.value }))
+        .sort((a, b) => a.date - b.date);
+        
+
+
     const width = 600, height = 300;
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const margin = { top: 20, right: 80, bottom: 40, left: 50 };
+
+    d3.select(gasRef.current).selectAll('*').remove();
 
     const svg = d3.select(gasRef.current)
         .attr('width', width)
         .attr('height', height);
 
     const x = d3.scaleTime()
-        .domain(d3.extent(gasData, d => d.date))
+        .domain(d3.extent(caData, d => d.date))
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(gasData, d => d.value)])
+        .domain([3, d3.max(caData, d => d.value) + 0.5])
         .range([height - margin.bottom, margin.top]);
 
     svg.append('g')
         .attr('transform', `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x).ticks(d3.timeMonth.every(2)).tickFormat(d3.timeFormat('%b %Y')))
+        .selectAll('text')
+        .attr('transform', 'rotate(-35)')
+        .style('text-anchor', 'end');
 
     svg.append('g')
         .attr('transform', `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y).tickFormat(d => `$${d}`));
 
+    // CA line
     svg.append('path')
-        .datum(gasData)
+        .datum(caData)
         .attr('fill', 'none')
         .attr('stroke', '#e74c3c')
-        .attr('stroke-width', 1.5)
-        .attr('d', d3.line()
-            .x(d => x(d.date))
-            .y(d => y(d.value))
-        );
-}, [data]);
+        .attr('stroke-width', 2)
+        .attr('d', d3.line().x(d => x(d.date)).y(d => y(d.value)));
 
+    svg.append('text')
+        .attr('x', width - margin.right + 5)
+        .attr('y', y(caData[caData.length - 1].value))
+        .attr('dy', '0.35em')
+        .attr('fill', '#e74c3c')
+        .style('font-size', '11px')
+        .text('California');
+
+    // National line
+    svg.append('path')
+        .datum(natData)
+        .attr('fill', 'none')
+        .attr('stroke', '#3498db')
+        .attr('stroke-width', 2)
+        .attr('d', d3.line().x(d => x(d.date)).y(d => y(d.value)));
+
+    svg.append('text')
+        .attr('x', width - margin.right + 5)
+        .attr('y', y(natData[natData.length - 1].value))
+        .attr('dy', '0.35em')
+        .attr('fill', '#3498db')
+        .style('font-size', '11px')
+        .text('National');
+
+    const caCircle = svg.append('circle')
+        .attr('r', 5)
+        .attr('fill', '#e74c3c')
+        .style('opacity', 0);
+    
+    const natCircle = svg.append('circle')
+        .attr('r', 5)
+        .attr('fill', '#3498db')
+        .style('opacity', 0);
+
+    // Tooltip
+    const tooltip = d3.select('body').append('div')
+        .style('position', 'absolute')
+        .style('background', '#333')
+        .style('color', 'white')
+        .style('padding', '6px 10px')
+        .style('border-radius', '4px')
+        .style('font-size', '12px')
+        .style('pointer-events', 'none')
+        .style('opacity', 0);
+
+    const bisect = d3.bisector(d => d.date).left;
+
+    svg.append('rect')
+        .attr('width', width - margin.left - margin.right)
+        .attr('height', height - margin.top - margin.bottom)
+        .attr('x', margin.left)
+        .attr('y', margin.top)
+        .attr('fill', 'none')
+        .attr('pointer-events', 'all')
+        .on('mousemove', function(event) {
+            const [mx] = d3.pointer(event);
+            const date = x.invert(mx);
+            const i = bisect(caData, date);
+            const dCa = caData[Math.min(i, caData.length - 1)];
+            const j = bisect(natData, date);
+            const dNat = natData[Math.min(j, natData.length - 1)];
+    
+    caCircle
+        .style('opacity', 1)
+        .attr('cx', x(dCa.date))
+        .attr('cy', y(dCa.value));
+    
+    natCircle
+        .style('opacity', 1)
+        .attr('cx', x(dNat.date))
+        .attr('cy', y(dNat.value));
+
+    tooltip
+        .style('opacity', 1)
+        .html(`${d3.timeFormat('%b %d, %Y')(dCa.date)}<br/>CA: $${dCa.value.toFixed(2)}/gal<br/>National: $${dNat.value.toFixed(2)}/gal`)
+        .style('left', `${event.pageX + 10}px`)
+        .style('top', `${event.pageY - 20}px`);
+    })
+        .on('mouseleave', () => {
+            tooltip.style('opacity', 0);
+            caCircle.style('opacity', 0);
+            natCircle.style('opacity', 0);
+    });
+    return () => {
+        tooltip.remove();
+    };
+
+}, [data]);
 useEffect(() => {
     if (!data || !groceryRef.current) return;
+
+    d3.select(groceryRef.current).selectAll('*').remove();
 
     const series = [
         { id: 'CUUSS49BSAF11', label: 'SF Metro', color: '#e74c3c' },
@@ -58,62 +157,125 @@ useEffect(() => {
     ];
 
     const width = 600, height = 300;
-    const margin = { top: 20, right: 80, bottom: 30, left: 50 };
+    const margin = { top: 20, right: 100, bottom: 40, left: 50 };
 
     const svg = d3.select(groceryRef.current)
         .attr('width', width)
         .attr('height', height);
 
-    const allDates = data.grocery_cpi.map(d => {
-        const month = d.period.startsWith('S') ? (d.period === 'S01' ? '06' : '12') : d.period.replace('M', '');
-        return new Date(`${d.year}-${month}-01`);
-    });
+    const parseData = (id) => data.grocery_cpi
+        .filter(d => d.series_id === id)
+        .map(d => {
+            const month = d.period.startsWith('S') ? (d.period === 'S01' ? '06' : '12') : d.period.replace('M', '');
+            return { date: new Date(`${d.year}-${month}-01`), value: +d.value };
+        })
+        .sort((a, b) => a.date - b.date);
+
+    const allData = series.flatMap(s => parseData(s.id));
 
     const x = d3.scaleTime()
-        .domain(d3.extent(allDates))
+        .domain(d3.extent(allData, d => d.date))
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
-        .domain([200, d3.max(data.grocery_cpi, d => +d.value)])
+        .domain([200, d3.max(allData, d => d.value) + 10])
         .range([height - margin.bottom, margin.top]);
 
     svg.append('g')
         .attr('transform', `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x).ticks(d3.timeYear.every(1)).tickFormat(d3.timeFormat('%Y')))
+        .selectAll('text')
+        .style('text-anchor', 'middle');
 
     svg.append('g')
         .attr('transform', `translate(${margin.left},0)`)
         .call(d3.axisLeft(y));
+    svg.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -height/2)
+        .attr('y', 12)
+        .attr('text-anchor', 'middle')
+        .style('font-size', '11px')
+        .style('fill', '#666')
+        .text('CPI Index (1982-84 = 100)');
 
+    const seriesDataMap = {};
     series.forEach(s => {
-        const seriesData = data.grocery_cpi
-            .filter(d => d.series_id === s.id)
-            .map(d => {
-                const month = d.period.startsWith('S') ? (d.period === 'S01' ? '06' : '12') : d.period.replace('M', '');
-                return { date: new Date(`${d.year}-${month}-01`), value: +d.value };
-            })
-            .sort((a, b) => a.date - b.date);
+        const sd = parseData(s.id);
+        seriesDataMap[s.id] = sd;
 
         svg.append('path')
-            .datum(seriesData)
+            .datum(sd)
             .attr('fill', 'none')
             .attr('stroke', s.color)
-            .attr('stroke-width', 1.5)
-            .attr('d', d3.line()
-                .x(d => x(d.date))
-                .y(d => y(d.value))
-            );
+            .attr('stroke-width', 2)
+            .attr('d', d3.line().x(d => x(d.date)).y(d => y(d.value)));
+
         svg.append('text')
             .attr('x', width - margin.right + 5)
-            .attr('y', y(seriesData[seriesData.length - 1].value))
+            .attr('y', y(sd[sd.length - 1].value))
             .attr('dy', '0.35em')
             .attr('fill', s.color)
             .style('font-size', '11px')
-            .text(s.label);    
+            .text(s.label);
     });
+
+    const circles = {};
+    series.forEach(s => {
+        circles[s.id] = svg.append('circle')
+            .attr('r', 5)
+            .attr('fill', s.color)
+            .style('opacity', 0);
+    });
+
+    const tooltip = d3.select('body').append('div')
+        .style('position', 'absolute')
+        .style('background', '#333')
+        .style('color', 'white')
+        .style('padding', '6px 10px')
+        .style('border-radius', '4px')
+        .style('font-size', '12px')
+        .style('pointer-events', 'none')
+        .style('opacity', 0);
+
+    const bisect = d3.bisector(d => d.date).left;
+
+    svg.append('rect')
+        .attr('width', width - margin.left - margin.right)
+        .attr('height', height - margin.top - margin.bottom)
+        .attr('x', margin.left)
+        .attr('y', margin.top)
+        .attr('fill', 'none')
+        .attr('pointer-events', 'all')
+        .on('mousemove', function(event) {
+            const [mx] = d3.pointer(event);
+            const date = x.invert(mx);
+
+            let html = `${d3.timeFormat('%b %Y')(date)}<br/>`;
+            series.forEach(s => {
+                const sd = seriesDataMap[s.id];
+                const i = bisect(sd, date);
+                const d = sd[Math.min(i, sd.length - 1)];
+                circles[s.id].style('opacity', 1).attr('cx', x(d.date)).attr('cy', y(d.value));
+                html += `<span style="color:${s.color}">${s.label}: ${d.value.toFixed(1)} CPI</span><br/>`;            });
+
+            tooltip.style('opacity', 1).html(html)
+                .style('left', `${event.pageX + 10}px`)
+                .style('top', `${event.pageY - 20}px`);
+        })
+        .on('mouseleave', () => {
+            tooltip.style('opacity', 0);
+            series.forEach(s => circles[s.id].style('opacity', 0));
+        });
+        return () => {
+            tooltip.remove();
+        };
+
 }, [data]);
-    useEffect(() => {
+useEffect(() => {
     if (!data || !utilityRef.current) return;
+
+    d3.select(utilityRef.current).selectAll('*').remove();
 
     const series = [
         { filter: d => d.type === 'electricity' && d.statedescription === 'California', label: 'CA Electricity', color: '#e74c3c' },
@@ -123,52 +285,114 @@ useEffect(() => {
     ];
 
     const width = 600, height = 300;
-    const margin = { top: 20, right: 100, bottom: 30, left: 50 };
+    const margin = { top: 20, right: 110, bottom: 40, left: 50 };
 
     const svg = d3.select(utilityRef.current)
         .attr('width', width)
         .attr('height', height);
 
+    const parseData = (filterFn) => data.utility_data
+        .filter(filterFn)
+        .map(d => ({ date: new Date(d.period), value: +d.price }))
+        .sort((a, b) => a.date - b.date);
+
+    const allParsed = series.map(s => parseData(s.filter));
+
     const x = d3.scaleTime()
-        .domain(d3.extent(data.utility_data, d => new Date(d.period)))
+        .domain(d3.extent(allParsed.flat(), d => d.date))
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(data.utility_data, d => +d.price)])
+        .domain([0, d3.max(allParsed.flat(), d => d.value) + 2])
         .range([height - margin.bottom, margin.top]);
 
     svg.append('g')
         .attr('transform', `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x).ticks(d3.timeYear.every(1)).tickFormat(d3.timeFormat('%Y')))
+        .selectAll('text')
+        .style('text-anchor', 'middle');
 
     svg.append('g')
         .attr('transform', `translate(${margin.left},0)`)
         .call(d3.axisLeft(y));
+    svg.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -height/2)
+        .attr('y', 12)
+        .attr('text-anchor', 'middle')
+        .style('font-size', '11px')
+        .style('fill', '#666')
+        .text('Price (¢/kWh for electricity, $/MCF for gas)');
 
-    series.forEach(s => {
-        const seriesData = data.utility_data
-            .filter(s.filter)
-            .map(d => ({ date: new Date(d.period), value: +d.price }))
-            .sort((a, b) => a.date - b.date);
+    const seriesDataList = [];
+    series.forEach((s, i) => {
+        const sd = allParsed[i];
+        seriesDataList.push({ ...s, data: sd });
 
         svg.append('path')
-            .datum(seriesData)
+            .datum(sd)
             .attr('fill', 'none')
             .attr('stroke', s.color)
-            .attr('stroke-width', 1.5)
-            .attr('d', d3.line()
-                .x(d => x(d.date))
-                .y(d => y(d.value))
-            );
+            .attr('stroke-width', 2)
+            .attr('d', d3.line().x(d => x(d.date)).y(d => y(d.value)));
 
         svg.append('text')
             .attr('x', width - margin.right + 5)
-            .attr('y', y(seriesData[seriesData.length - 1].value))
+            .attr('y', y(sd[sd.length - 1].value))
             .attr('dy', '0.35em')
             .attr('fill', s.color)
             .style('font-size', '11px')
             .text(s.label);
     });
+
+    const circles = seriesDataList.map(s =>
+        svg.append('circle')
+            .attr('r', 5)
+            .attr('fill', s.color)
+            .style('opacity', 0)
+    );
+
+    const tooltip = d3.select('body').append('div')
+        .style('position', 'absolute')
+        .style('background', '#333')
+        .style('color', 'white')
+        .style('padding', '6px 10px')
+        .style('border-radius', '4px')
+        .style('font-size', '12px')
+        .style('pointer-events', 'none')
+        .style('opacity', 0);
+
+    const bisect = d3.bisector(d => d.date).left;
+
+    svg.append('rect')
+        .attr('width', width - margin.left - margin.right)
+        .attr('height', height - margin.top - margin.bottom)
+        .attr('x', margin.left)
+        .attr('y', margin.top)
+        .attr('fill', 'none')
+        .attr('pointer-events', 'all')
+        .on('mousemove', function(event) {
+            const [mx] = d3.pointer(event);
+            const date = x.invert(mx);
+            let html = `${d3.timeFormat('%b %Y')(date)}<br/>`;
+
+            seriesDataList.forEach((s, i) => {
+                const idx = bisect(s.data, date);
+                const d = s.data[Math.min(idx, s.data.length - 1)];
+                circles[i].style('opacity', 1).attr('cx', x(d.date)).attr('cy', y(d.value));
+                html += `<span style="color:${s.color}">${s.label}: ${d.value.toFixed(2)} ${s.label.includes('Electricity') ? '¢/kWh' : '$/MCF'}</span><br/>`;            });
+
+            tooltip.style('opacity', 1).html(html)
+                .style('left', `${event.pageX + 10}px`)
+                .style('top', `${event.pageY - 20}px`);
+        })
+        .on('mouseleave', () => {
+            tooltip.style('opacity', 0);
+            circles.forEach(c => c.style('opacity', 0));
+        });
+
+    return () => { tooltip.remove(); };
+
 }, [data]);
 
 
