@@ -3,6 +3,7 @@ import Calculator from './components/Calculator'
 import Results from './components/Results'
 import './App.css'
 import CountyMap from './components/Map'
+import Charts from './components/Charts'
 
 
 
@@ -21,8 +22,8 @@ function App() {
       <h1>Bay Area Affordability Index</h1>
       {data && <Calculator data={data} onSubmit={setResults} />}
       {results && <Results results={results} />}
-      {results && <Results results={results} />}
       {results && <CountyMap results={results} />}
+      {data && <Charts data={data} />}
       </div>
   )
 }
