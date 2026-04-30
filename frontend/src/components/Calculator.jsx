@@ -79,9 +79,9 @@ function Calculator({ data, onSubmit}) {
             <label>Vehicle MPG</label>
             <input type="number" min="1" max="150" value={mpg} onChange={e => setMpg(+e.target.value)} />
             {errors.mpg && <span style={{ color: 'red', fontSize: '12px' }}>{errors.mpg}</span>}
-
+            <div style ={{textAlign: 'center', marginTop: '20px'}}>
             <button onClick={handleSubmit}>Calculate</button>
-
+            </div>
         </div>
     )
 }

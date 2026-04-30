@@ -16,6 +16,7 @@ const groceryBaseline2024 = {
     6: 920
 };
 
+
 const utilityBaseline2024 = {
     "electricity": 503,
     "natural_gas": 24
@@ -133,6 +134,15 @@ export function affordabilityScore(data, countyName, annualIncome, filingStatus,
    }
    const utilityCost = ( (electrictyPrice/100) * utilityBaseline2024["electricity"]) + ((natuaralGasPrice/10) *utilityBaseline2024["natural_gas"]);
    totalCombinedMonthlyCost += utilityCost;
+   let monthlyHealthcare = 0;
+    if (filingStatus === 'single' && householdSize === 1) {
+        monthlyHealthcare = 150;
+    } else if (filingStatus === 'married' && householdSize === 2) {
+        monthlyHealthcare = 400;
+    } else {
+        monthlyHealthcare = 550;
+    }
+   totalCombinedMonthlyCost += monthlyHealthcare;
 
    const affordabilityScoreRatio = totalCombinedMonthlyCost / (annualIncome/12);
    return {
@@ -143,6 +153,7 @@ export function affordabilityScore(data, countyName, annualIncome, filingStatus,
             gas: Math.round(monthlyGasCost),
             groceries: Math.round(monthlyGroceryCost),
             utilities: Math.round(utilityCost),
+            healthcare: Math.round(monthlyHealthcare),
             total: Math.round(totalCombinedMonthlyCost)
         }
 
