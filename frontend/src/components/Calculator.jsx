@@ -20,15 +20,15 @@ function Calculator({ data, onSubmit}) {
         if (monthlyMiles <= 0 || monthlyMiles > 10000) newErrors.monthlyMiles = 'Must be between 1 and 10,000';
         return newErrors;
     }
-    function handleSubmit(){
+    function handleSubmit() {
         const newErrors = validate();
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
         }
-    setErrors({});
+        setErrors({});
         const results = bayAreaCountiesComparision(data, +income, filingStatus, householdSize, bedrooms, monthlyMiles, mpg);
-        onSubmit(results);
+        onSubmit(results, +income);
     }
 
     return (

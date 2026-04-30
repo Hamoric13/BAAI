@@ -1,30 +1,39 @@
 import { useState, useEffect } from 'react'
-import Calculator from './components/Calculator'
-import Results from './components/Results'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import Home from './pages/Home'
+import Trends from './pages/Trends'
+import Methodology from './pages/Methodology'
 import './App.css'
-import CountyMap from './components/Map'
-import Charts from './components/Charts'
-
-
+import Footer from './components/Footer'
 
 function App() {
   const [data, setData] = useState(null);
-  const [results, setResults] = useState(null);
 
   useEffect(() => {
     fetch('/raw_data.json')
       .then(res => res.json())
       .then(json => setData(json))
-  }, [])
+  }, []);
 
   return (
-    <div className="app">
-      <h1>Bay Area Affordability Index</h1>
-      {data && <Calculator data={data} onSubmit={setResults} />}
-      {results && <Results results={results} />}
-      {results && <CountyMap results={results} />}
-      {data && <Charts data={data} />}
-      </div>
+    <BrowserRouter>
+        <header className="header">
+          <h1>Bay Area Affordability Index</h1>
+          <nav>
+            <Link to="/">Calculator</Link>
+            <Link to="/trends">Trends</Link>
+            <Link to="/methodology">Methodology</Link>
+          </nav>
+        </header>
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home data={data} />} />
+            <Route path="/trends" element={<Trends data={data} />} />
+            <Route path="/methodology" element={<Methodology />} />
+          </Routes>
+        </main>
+        <Footer lastUpdated={data?.last_updated} />
+    </BrowserRouter>
   )
 }
 

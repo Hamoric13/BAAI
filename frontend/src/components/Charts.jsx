@@ -398,7 +398,6 @@ useEffect(() => {
 
   return (
     <div className="charts">
-      <h2>Trends Over Time</h2>
       <h3>Gas Prices</h3>
       <svg ref={gasRef}></svg>
       <h3>Grocery CPI</h3>

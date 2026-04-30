@@ -1,5 +1,5 @@
-function Results({ results }) {
-
+function Results({ results, income }) {
+    const monthlyIncome = Math.round(income / 12);
     return (
         <div className="results">
             <h2>Affordability by County</h2>
@@ -14,7 +14,8 @@ function Results({ results }) {
                             <span>Gas: ${county.breakdown.gas}/mo</span> &nbsp;·&nbsp;
                             <span>Groceries: ${county.breakdown.groceries}/mo</span> &nbsp;·&nbsp;
                             <span>Utilities: ${county.breakdown.utilities}/mo</span> &nbsp;·&nbsp;
-                            <strong>Total: ${county.breakdown.total}/mo</strong>
+                            <strong>Estimated Cost: ${county.breakdown.total}/mo</strong>
+                            <span style={{color: '#666'}}> of ${monthlyIncome}/mo gross</span>
                         </div>
                     )}
                 </div>

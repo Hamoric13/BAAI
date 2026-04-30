@@ -11,7 +11,6 @@ body {
 }
 
 .app {
-  max-width: 1200px;
   margin: 0 auto;
   padding: 24px;
 }
@@ -67,6 +66,20 @@ body {
   margin-bottom: 32px;
 }
 
+.charts h3 {
+  font-size: 20px;
+  margin-top: 48px;
+  margin-bottom: 16px;
+  color: #0f2d52;
+}
+
+.charts h4 {
+  font-size: 14px;
+  color: #666;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
 .calculator .radio-group {
   display: flex;
   flex-direction: column;
@@ -83,4 +96,136 @@ body {
 
 .calculator .radio-group input {
   width: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: #0f2d52;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  color: white;
+  font-size: 28px;
+  margin: 0;
+}
+
+.header nav {
+  display: flex;
+  gap: 32px;
+}
+
+.header nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 500;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+.header nav a:hover {
+  opacity: 1;
+}
+
+.app main {
+  padding: 0 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero {
+  margin-bottom: 32px;
+}
+
+.hero h2 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.hero p {
+  color: #666;
+  font-size: 16px;
+  max-width: 600px;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.placeholder {
+  color: #999;
+  font-size: 15px;
+  padding: 40px;
+  text-align: center;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+}
+
+.footer {
+  background: #0f2d52;
+  color: white;
+  padding: 48px 40px;
+  margin-top: 80px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footer h4 {
+  color: white;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.footer p {
+  color: rgba(255,255,255,0.7);
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.footer a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.footer a:hover {
+  color: white;
+}
+
+.main-content {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
 }
