@@ -83,16 +83,7 @@ function Methodology() {
           <li>Scores reflect current costs at time of calculation using the most recent available data point for each category</li>
         </ul>
   
-        <h3 style={{ marginTop: '32px' }}>Data Sources</h3>
-        <ul style={{ color: '#555', lineHeight: '1.8', marginTop: '12px' }}>
-          <li><a href="https://www.huduser.gov/portal/datasets/fmr.html" target="_blank" style={{ color: '#0f2d52' }}>HUD Fair Market Rents 2026</a></li>
-          <li><a href="https://www.eia.gov/petroleum/gasdiesel/" target="_blank" style={{ color: '#0f2d52' }}>EIA Weekly Retail Gasoline Prices</a></li>
-          <li><a href="https://www.bls.gov/cpi/" target="_blank" style={{ color: '#0f2d52' }}>BLS Consumer Price Index</a></li>
-          <li><a href="https://www.eia.gov/electricity/data.php" target="_blank" style={{ color: '#0f2d52' }}>EIA Electricity Retail Sales Data</a></li>
-          <li><a href="https://www.eia.gov/naturalgas/data.php" target="_blank" style={{ color: '#0f2d52' }}>EIA Natural Gas Prices</a></li>
-          <li><a href="https://www.kff.org/health-costs/" target="_blank" style={{ color: '#0f2d52' }}>KFF Employer Health Benefits Survey 2025</a></li>
-          <li><a href="https://www.bls.gov/cex/" target="_blank" style={{ color: '#0f2d52' }}>BLS Consumer Expenditure Survey 2024</a></li>
-        </ul>
+        
   
         <p style={{ marginTop: '40px', color: '#999', fontSize: '13px' }}>
           Built by Haramrit Singh Suri · Data refreshed from government APIs · For questions or feedback, visit <a href="https://github.com/Hamoric13/BAAI" target="_blank" style={{ color: '#0f2d52' }}>GitHub</a>
