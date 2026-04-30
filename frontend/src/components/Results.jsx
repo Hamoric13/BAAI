@@ -29,14 +29,14 @@ function Results({ results, income }) {
                     <thead>
                         <tr>
                             <th>County</th>
-                            <th>% of income</th>
-                            <th>Rent</th>
-                            <th>Tax</th>
-                            <th>Gas</th>
-                            <th>Groceries</th>
-                            <th>Utilities</th>
-                            <th>Healthcare</th>
-                            <th>Total/mo</th>
+                            <th>% of income 📊</th>
+                            <th>Rent 🏠</th>
+                            <th>Tax 🏛️</th>
+                            <th>Gas ⛽</th>
+                            <th>Groceries 🛒</th>
+                            <th>Utilities 💡</th>
+                            <th>Healthcare 🏥</th>
+                            <th>Total/mo 💰</th>
                         </tr>
                     </thead>
                     <tbody>
