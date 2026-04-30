@@ -13,7 +13,7 @@ function Home({ data }) {
         <h2 style={{ fontSize: '36px', marginBottom: '16px' }}>Can you afford to live in the Bay Area?</h2>          <p>Enter your income and household details to see a personalized affordability breakdown across all 9 Bay Area counties.</p>
         </div>
         
-        {data && <Calculator data={data} onSubmit={(results, inc) => { setResults(results); setIncome(inc); }} />}        
+        {data && <Calculator data={data} onSubmit={(results, inc) => { setResults(results); setIncome(inc); }} onInputChange={() => { setResults(null); setIncome(null); }} />}        
         {results && <CountyMap results={results} />}
         
         {results && <Results results={results} income={income} />}        

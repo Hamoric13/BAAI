@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { bayAreaCountiesComparision } from '../utils/affordability'
 
-function Calculator({ data, onSubmit}) {
+function Calculator({ data, onSubmit, onInputChange}) {
 
     const [income, setIncome] = useState('');
     const [filingStatus, setFilingStatus] = useState('single');
@@ -13,8 +13,10 @@ function Calculator({ data, onSubmit}) {
     const [errors, setErrors] = useState({});
 
     function validate() {
+        const cleanIncome = +income.replace(/,/g, '');
         const newErrors = {};
-        if (!income || +income <= 0) newErrors.income = 'Please enter a valid income';
+        if (!income || cleanIncome <= 0) newErrors.income = 'Please enter a valid income';
+        if (cleanIncome >= 1000000000) newErrors.income = 'Please enter an income under $1,000,000,000';
         if (householdSize < 1 || householdSize > 6) newErrors.householdSize = 'Must be between 1 and 6';
         if (mpg <= 0 || mpg > 150) newErrors.mpg = 'Please enter a realistic MPG';
         if (monthlyMiles <= 0 || monthlyMiles > 10000) newErrors.monthlyMiles = 'Must be between 1 and 10,000';
@@ -27,8 +29,9 @@ function Calculator({ data, onSubmit}) {
             return;
         }
         setErrors({});
-        const results = bayAreaCountiesComparision(data, +income, filingStatus, householdSize, bedrooms, monthlyMiles, mpg);
-        onSubmit(results, +income);
+        const cleanIncome = +income.replace(/,/g, '');
+        const results = bayAreaCountiesComparision(data, cleanIncome, filingStatus, householdSize, bedrooms, monthlyMiles, mpg);
+        onSubmit(results, cleanIncome);
     }
 
     return (
@@ -37,12 +40,10 @@ function Calculator({ data, onSubmit}) {
 
             <label>Annual Income (pre-tax) </label>
             <input
-                type="number"
-                min="1"
-                max="100000000"
+                type="text"
                 value={income}
-                onChange={e => setIncome(e.target.value)}
-                placeholder="e.g. 75000"
+                onChange={e => {setIncome(e.target.value); onInputChange();}}
+                placeholder="e.g. 75,000"
             />
             {errors.income && <span style={{ color: 'red', fontSize: '12px' }}>{errors.income}</span>}
 
@@ -60,11 +61,11 @@ function Calculator({ data, onSubmit}) {
             </div>
 
             <label>Household Size</label>
-            <input type="number" min="1" max="6" value={householdSize} onChange={e => setHouseholdSize(+e.target.value)} />
+            <input type="number" min="1" max="6" value={householdSize} onChange={e => {setHouseholdSize(+e.target.value); onInputChange();}} />
             {errors.householdSize && <span style={{ color: 'red', fontSize: '12px' }}>{errors.householdSize}</span>}
 
             <label>Bedrooms</label>
-            <select value={bedrooms} onChange={e => setBedrooms(+e.target.value)}>
+            <select value={bedrooms} onChange={e => {setBedrooms(+e.target.value); onInputChange();}}>
                 <option value={0}>Studio</option>
                 <option value={1}>1 Bedroom</option>
                 <option value={2}>2 Bedrooms</option>
@@ -73,11 +74,11 @@ function Calculator({ data, onSubmit}) {
             </select>
             
             <label>Monthly Miles Driven</label>
-            <input type="number" min="1" max="100000" value={monthlyMiles} onChange={e => setMonthlyMiles(+e.target.value)} />
+            <input type="number" min="1" max="100000" value={monthlyMiles} onChange={e => {setMonthlyMiles(+e.target.value); onInputChange();}} />
             {errors.monthlyMiles && <span style={{ color: 'red', fontSize: '12px' }}>{errors.monthlyMiles}</span>}
 
             <label>Vehicle MPG</label>
-            <input type="number" min="1" max="150" value={mpg} onChange={e => setMpg(+e.target.value)} />
+            <input type="number" min="1" max="150" value={mpg} onChange={e => {setMpg(+e.target.value); onInputChange();}} />
             {errors.mpg && <span style={{ color: 'red', fontSize: '12px' }}>{errors.mpg}</span>}
             <div style ={{textAlign: 'center', marginTop: '20px'}}>
             <button onClick={handleSubmit}>Calculate</button>
