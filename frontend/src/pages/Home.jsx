@@ -8,10 +8,9 @@ function Home({ data }) {
     const [income, setIncome] = useState(null);
   
     return (
-      <div>
+      <div className="page">
         <div className="hero">
-          <h2>Can you afford to live in the Bay Area?</h2>
-          <p>Enter your income and household details to see a personalized affordability breakdown across all 9 Bay Area counties.</p>
+        <h2 style={{ fontSize: '36px', marginBottom: '16px' }}>Can you afford to live in the Bay Area?</h2>          <p>Enter your income and household details to see a personalized affordability breakdown across all 9 Bay Area counties.</p>
         </div>
         
         {data && <Calculator data={data} onSubmit={(results, inc) => { setResults(results); setIncome(inc); }} />}        

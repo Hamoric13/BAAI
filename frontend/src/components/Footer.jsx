@@ -7,6 +7,10 @@ function Footer({ lastUpdated }) {
         <div className="footer-section">
           <h4>Bay Area Affordability Index</h4>
           <p>A data-driven tool for understanding the true cost of living across all 9 Bay Area counties.</p>
+          <h4 style={{ marginTop: '20px' }}>Disclaimer</h4>
+    <p style={{ fontSize: '12px', opacity: '0.6' }}>
+        This tool is for informational purposes only and should not be used as the sole basis for financial decisions. Actual costs vary significantly based on lifestyle, neighborhood, and individual circumstances.
+    </p>
         </div>
         <div className="footer-section">
           <h4>Pages</h4>

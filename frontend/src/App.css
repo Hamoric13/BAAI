@@ -209,8 +209,8 @@ body {
 }
 
 .main-content {
-  padding: 40px;
-  max-width: 1200px;
+  padding: 0 150px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -307,4 +307,32 @@ body {
   height: 8px;
   border-radius: 50%;
   margin-right: 6px;
+}
+
+.methodology h3 {
+  margin-top: 40px;
+  margin-bottom: 12px;
+}
+
+.methodology h4 {
+  margin-bottom: 8px;
+}
+
+.methodology p {
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+
+.methodology ul {
+  margin-top: 12px;
+  padding-left: 20px;
+  line-height: 2;
+}
+
+.methodology a {
+  color: #0f2d52;
+}
+
+.page {
+  padding-top: 40px;
 }
