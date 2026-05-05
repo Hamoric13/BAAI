@@ -25,8 +25,9 @@ function Results({ results, income }) {
             </div>
 
             {showTable && (
-                <table className="data-table">
-                    <thead>
+                <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%', display: 'block' }}>                
+                <table className="data-table" style={{ minWidth: '700px' }}>
+                <thead>
                         <tr>
                             <th>County</th>
                             <th>% of income 📊</th>
@@ -55,6 +56,7 @@ function Results({ results, income }) {
                         ))}
                     </tbody>
                 </table>
+                </div>
             )}
         </div>
     )

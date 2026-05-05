@@ -4,98 +4,25 @@
   box-sizing: border-box;
 }
 
+html, body {
+  width: 100%;
+  min-height: 100vh;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: #f8f9fa;
   color: #333;
-}
-
-.app {
-  margin: 0 auto;
-  padding: 24px;
-}
-
-
-.calculator {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  max-width: 600px;
-  margin-bottom: 40px;
 }
 
-.calculator label {
-  font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 2px;
-}
-
-.calculator input, .calculator select {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   width: 100%;
-}
-
-.calculator button {
-  padding: 10px 24px;
-  background: #264653;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  cursor: pointer;
-  width: fit-content;
-}
-
-.results {
-  margin-bottom: 40px;
-}
-
-.map-container {
-  margin-bottom: 40px;
-}
-
-.charts {
-  margin-bottom: 40px;
-}
-
-.charts svg {
-  display: block;
-  margin-bottom: 32px;
-}
-
-.charts h3 {
-  font-size: 20px;
-  margin-top: 48px;
-  margin-bottom: 16px;
-  color: #0f2d52;
-}
-
-.charts h4 {
-  font-size: 14px;
-  color: #666;
-  font-weight: 400;
-  margin-bottom: 24px;
-}
-
-.calculator .radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.calculator .radio-group label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: normal;
-  width: auto;
-}
-
-.calculator .radio-group input {
-  width: auto;
+  overflow-x: hidden;
 }
 
 .header {
@@ -131,19 +58,20 @@ body {
   opacity: 1;
 }
 
-.app main {
-  padding: 0 40px;
-  max-width: 1200px;
+.main-content {
+  flex: 1;
+  padding: 0 60px;
+  max-width: 1400px;
   margin: 0 auto;
+  width: 100%;
+}
+
+.page {
+  padding-top: 40px;
 }
 
 .hero {
   margin-bottom: 32px;
-}
-
-.hero h2 {
-  font-size: 28px;
-  margin-bottom: 8px;
 }
 
 .hero p {
@@ -152,11 +80,55 @@ body {
   max-width: 600px;
 }
 
-.two-col {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 40px;
-  align-items: start;
+.calculator {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
+.calculator label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.calculator input, .calculator select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.calculator button {
+  padding: 10px 24px;
+  background: #264653;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.calculator .radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calculator .radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: normal;
+  width: auto;
+}
+
+.calculator .radio-group input {
+  width: auto;
 }
 
 .placeholder {
@@ -168,66 +140,8 @@ body {
   border-radius: 8px;
 }
 
-.footer {
-  background: #0f2d52;
-  color: white;
-  padding: 48px 40px;
-  margin-top: 80px;
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 40px;
-}
-
-.footer h4 {
-  color: white;
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
-  margin-bottom: 12px;
-}
-
-.footer p {
-  color: rgba(255,255,255,0.7);
-  font-size: 15px;
-  margin-bottom: 6px;
-}
-
-.footer a {
-  color: rgba(255,255,255,0.7);
-  text-decoration: none;
-  display: block;
-  margin-bottom: 8px;
-  font-size: 15px;
-}
-
-.footer a:hover {
-  color: white;
-}
-
-.main-content {
-  padding: 0 150px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.main-content {
-  flex: 1;
+.results {
+  margin-bottom: 40px;
 }
 
 .card-grid {
@@ -238,7 +152,7 @@ body {
 }
 
 .score-card {
-  background: var(--color-background-primary, white);
+  background: white;
   border: 0.5px solid #ddd;
   border-left: 4px solid;
   border-radius: 8px;
@@ -309,6 +223,33 @@ body {
   margin-right: 6px;
 }
 
+.map-container {
+  margin-bottom: 40px;
+}
+
+.charts {
+  margin-bottom: 40px;
+}
+
+.charts svg {
+  display: block;
+  margin-bottom: 32px;
+}
+
+.charts h3 {
+  font-size: 20px;
+  margin-top: 48px;
+  margin-bottom: 16px;
+  color: #0f2d52;
+}
+
+.charts h4 {
+  font-size: 14px;
+  color: #666;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
 .methodology h3 {
   margin-top: 40px;
   margin-bottom: 12px;
@@ -333,8 +274,46 @@ body {
   color: #0f2d52;
 }
 
-.page {
-  padding-top: 40px;
+.footer {
+  background: #0f2d52;
+  color: white;
+  padding: 48px 40px;
+  margin-top: 80px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footer h4 {
+  color: white;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.footer p {
+  color: rgba(255,255,255,0.7);
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.footer a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.footer a:hover {
+  color: white;
 }
 
 @media (max-width: 768px) {
@@ -361,6 +340,10 @@ body {
     height: 350px !important;
   }
 
+  .footer {
+    padding: 32px 20px;
+  }
+
   .footer-content {
     grid-template-columns: 1fr;
     gap: 24px;
@@ -370,11 +353,7 @@ body {
     width: 100% !important;
   }
 
-  .data-table {
-    font-size: 11px;
-  }
-
-  .data-table th, .data-table td {
-    padding: 6px 8px;
+  .toggle-btn {
+    display: none;
   }
 }
