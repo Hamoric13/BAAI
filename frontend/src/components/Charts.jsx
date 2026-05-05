@@ -9,6 +9,8 @@ function Charts({ data }) {
   useEffect(() => {
     if (!data || !gasRef.current) return;
 
+    const width = gasRef.current.parentElement.offsetWidth || 600;
+
     const caData = data.gas_prices
         .filter(d => d.area_name === 'CALIFORNIA')
         .map(d => ({ date: new Date(d.period), value: +d.value }))
@@ -21,7 +23,7 @@ function Charts({ data }) {
         
 
 
-    const width = 600, height = 300;
+    const height = 300;
     const margin = { top: 20, right: 80, bottom: 40, left: 50 };
 
     d3.select(gasRef.current).selectAll('*').remove();
@@ -148,6 +150,11 @@ function Charts({ data }) {
 useEffect(() => {
     if (!data || !groceryRef.current) return;
 
+    const width = gasRef.current.parentElement.offsetWidth || 600;
+
+
+    
+
     d3.select(groceryRef.current).selectAll('*').remove();
 
     const series = [
@@ -156,7 +163,7 @@ useEffect(() => {
         { id: 'CUUR0000SAF11', label: 'National', color: '#3498db' }
     ];
 
-    const width = 600, height = 300;
+    const height = 300;
     const margin = { top: 20, right: 100, bottom: 40, left: 50 };
 
     const svg = d3.select(groceryRef.current)
@@ -275,6 +282,9 @@ useEffect(() => {
 useEffect(() => {
     if (!data || !utilityRef.current) return;
 
+    const width = gasRef.current.parentElement.offsetWidth || 600;
+
+
     d3.select(utilityRef.current).selectAll('*').remove();
 
     const series = [
@@ -284,7 +294,7 @@ useEffect(() => {
         { filter: d => d.type === 'natural_gas' && d.statedescription === 'U.S.', label: 'US Gas', color: '#2ecc71' }
     ];
 
-    const width = 600, height = 300;
+    const height = 300;
     const margin = { top: 20, right: 110, bottom: 40, left: 50 };
 
     const svg = d3.select(utilityRef.current)

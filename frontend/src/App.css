@@ -336,3 +336,45 @@ body {
 .page {
   padding-top: 40px;
 }
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 20px;
+    text-align: center;
+  }
+
+  .header nav {
+    gap: 20px;
+  }
+
+  .main-content {
+    padding: 0 16px;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    height: 350px !important;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .charts svg {
+    width: 100% !important;
+  }
+
+  .data-table {
+    font-size: 11px;
+  }
+
+  .data-table th, .data-table td {
+    padding: 6px 8px;
+  }
+}
