@@ -18,7 +18,9 @@ function App() {
   return (
     <BrowserRouter>
         <header className="header">
+        <Link to="/" style={{ textDecoration: 'none' }}>
           <h1>Bay Area Affordability Index</h1>
+         </Link> 
           <nav>
             <Link to="/">Calculator</Link>
             <Link to="/trends">Trends</Link>

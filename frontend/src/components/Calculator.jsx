@@ -15,7 +15,7 @@ function Calculator({ data, onSubmit, onInputChange}) {
     function validate() {
         const cleanIncome = +income.replace(/,/g, '');
         const newErrors = {};
-        if (!income || cleanIncome <= 0) newErrors.income = 'Please enter a valid income';
+        if (!income || isNaN(cleanIncome) || cleanIncome <= 0) newErrors.income = 'Please enter a valid income';
         if (cleanIncome >= 1000000000) newErrors.income = 'Please enter an income under $1,000,000,000';
         if (householdSize < 1 || householdSize > 6) newErrors.householdSize = 'Must be between 1 and 6';
         if (mpg <= 0 || mpg > 150) newErrors.mpg = 'Please enter a realistic MPG';
